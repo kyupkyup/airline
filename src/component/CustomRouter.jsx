@@ -5,6 +5,7 @@ import Moim from '../page/Moim'
 import Write from '../page/Moim/Write'
 import Account from '../page/Account'
 import Specific from '../page/Moim/Specific'
+import Update from '../page/Moim/Write/Update'
 
 const CustomRouterProvider = ({ children }) => {
     const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const CustomRouterProvider = ({ children }) => {
         {
             path: "/moim/write",
             element: <Write />
+        },
+        {
+            path: "/moim/update/:id",
+            element: <Update />
         },
         {
             path: "/moim/:id",

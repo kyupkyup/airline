@@ -4,6 +4,8 @@ import { arrayContainsUser, removeObjectFromArray } from '../../utils/string'
 import { doc, updateDoc } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import 'dayjs/locale/ko'
 
 const MoimItem = ({ idProps, moimDataProps }) => {
     const [moim, setMoim] = useState(moimDataProps);
@@ -54,18 +56,28 @@ const MoimItem = ({ idProps, moimDataProps }) => {
         }
     }, [user, moim])
 
-    return <li key={idProps}>
-        <div onClick={navigateSpecific}>
-            이름 : {moim.name}
-            시간 : {moim.date.seconds}
-            장소 : {moim.place}
-            비용 : {moim.price}
-            참석인원 : {moim.attendance.map(attender => attender && <img src={attender.photoUrl} />)}
-        </div>
+    return <>
+        <li key={idProps} style={{ position: "relative" }}>
+            {moim.isPrizedOut && <div className="prized-out" onClick={isAttend ? navigateSpecific : () => { }}>
+                프라이즈 아웃 완료
+            </div>}
+            <div onClick={navigateSpecific} className="moim-specific">
+                <div>{String(dayjs(moim.targetDate).locale('ko').format('YY.MM.DD ddd HH:mm'))}</div>
+                <div>{moim.name}</div>
+                <div><p>장소</p>    {moim.place}</div>
+                <div><p>비용</p>      {moim.price}</div>
+                <div className="attenders">참석자</div>
+                {moim.attendance.map(attender => attender &&
+                    <><img src={attender.photoUrl} className="profile" /><p className="profile-name" >{(attender.userName?.substr(0, 7))}</p></>
 
-        {isAttend ? <button onClick={() => cancelAttend(idProps, moim)}>취소</button> : <button onClick={() => attend(idProps, moim)}>참석</button>
-        }
-    </li >
+                )}
+            </div>
+
+            {
+                isAttend ? <button disabled={moim.isPrizedOut} className="attend-btn cancel" onClick={() => cancelAttend(idProps, moim)}>취소</button> : <button className="attend-btn" disabled={moim.isPrizedOut} onClick={() => attend(idProps, moim)}>참석</button>
+            }
+        </li >
+    </>
 }
 
 export default MoimItem

@@ -16,6 +16,28 @@ const useUser = () => {
         })
     }
 
+    const refreshUser = () => {
+        setUser(
+            {
+                uid: '',
+                displayName: '',
+                email: '',
+                photoUrl: '',
+                buyIn: 0,
+                usedBuyIn: 0,
+                earnedBuyIn: 0,
+                attend: 0,
+                userName: '',
+                rank: {
+                    first: 0,
+                    second: 0,
+                    third: 0,
+                    fourth: 0,
+                }
+            }
+        )
+    }
+
     useEffect(() => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -25,17 +47,29 @@ const useUser = () => {
 
                 const docRef = doc(db, 'users', currentUser.uid);
                 const docSnap = await getDoc(docRef);
-                setUser(
-                    {
-                        uid: currentUser.uid,
-                        displayName: currentUser.displayName,
-                        email: currentUser.email,
-                        photoUrl: currentUser.photoURL,
-                        buyIn: docSnap.data().buyIn
-                    }
-                )
+                if (docSnap.exists()) {
+                    setUser(
+                        {
+                            uid: currentUser.uid,
+                            displayName: currentUser.displayName,
+                            email: currentUser.email,
+                            photoUrl: currentUser.photoURL,
+                            buyIn: docSnap.data().buyIn,
+                            usedBuyIn: docSnap.data().usedBuyIn,
+                            earnedBuyIn: docSnap.data().earnedBuyIn,
+                            attend: docSnap.data().attend,
+                            userName: docSnap.data().userName,
+                            rank: {
+                                first: docSnap.data().rank.first,
+                                second: docSnap.data().rank.second,
+                                third: docSnap.data().rank.third,
+                                fourth: docSnap.data().rank.fourth,
+                            }
+                        }
+                    )
+                }
             } else {
-                setUser(null)            // 사용자가 로그인하지 않음
+                setUser(null)
             }
         })
     }, [])
@@ -43,16 +77,17 @@ const useUser = () => {
     return {
         user,
         setUser,
-        usageBuyIn
+        usageBuyIn,
+        refreshUser
     }
 }
 
 // Context Provider 컴포넌트
 export const UserProvider = ({ children }) => {
-    const { user, setUser, usageBuyIn } = useUser();
+    const { user, setUser, usageBuyIn, refreshUser } = useUser();
 
     return (
-        <UserContext.Provider value={{ user, setUser, usageBuyIn }}>
+        <UserContext.Provider value={{ user, setUser, usageBuyIn, refreshUser }}>
             {children}
         </UserContext.Provider>
     );

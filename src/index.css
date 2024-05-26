@@ -1,15 +1,55 @@
-body {
+/*body {*/
+/*  margin: 0;*/
+/*  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',*/
+/*    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',*/
+/*    sans-serif;*/
+/*  -webkit-font-smoothing: antialiased;*/
+/*  -moz-osx-font-smoothing: grayscale;*/
+/*}*/
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+textarea,
+p,
+blockquote,
+th,
+td,
+input,
+select,
+button {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input {
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+
+.input-write {
+  width: 90%;
+  margin-bottom: 20px;
+  height: 50px;
 }
 
 /* styles.css */
@@ -45,6 +85,16 @@ code {
   overflow: hidden;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+  padding: 5px;
+}
+
+li {
+  list-style: none;
+}
+
 .google-icon {
   width: 100%;
   height: auto;
@@ -53,5 +103,360 @@ code {
 /* 버튼 텍스트 스타일 */
 .btn-text {
   display: inline-block;
-  padding: 0 15px;
+  padding: 0;
+}
+
+html,
+body,
+#id {
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.route-container {
+  width: 85%;
+  overflow-y: auto;
+}
+
+.container>nav {
+  width: 17%;
+  height: 100%;
+  border-right: 2px solid #AC1724;
+}
+
+.container>nav>ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  height: 100%;
+
+}
+
+.container>nav>ul>li {
+  text-decoration: none;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.nav-btn {
+  /*기본 날리기*/
+  margin-top: 10px;
+
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  font-size: 12px;
+  /* 글자를 세로 중앙에 배치 시킵니다. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  /* 구글 로그인 버튼처럼 사각형 모서리를 라운드로 바꿉니다. */
+  /*border-radius: 5px;*/
+
+  /* 호버 효과를 추가합니다. */
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn:disabled {
+  /*기본 날리기*/
+  padding: 11px;
+  outline: none;
+  font-size: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: white;
+  /* 글자를 세로 중앙에 배치 시킵니다. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 구글 로그인 버튼처럼 사각형 모서리를 라운드로 바꿉니다. */
+  /*border-radius: 5px;*/
+
+  /* 호버 효과를 추가합니다. */
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn:disabled a {
+  color: #AC1724;
+  font-weight: 900;
+}
+
+.auth-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.side-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.create-btn {
+  position: absolute;
+  width: calc(100vw - 30%);
+  bottom: 20px;
+  margin-left: 20px;
+  border: none;
+  height: 50px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 700;
+  background-color: #AC1724;
+}
+
+.moim-container {
+  width: 90%;
+  margin-left: 10px;
+}
+
+.moim-container>li,
+.moim-container .rank-select-list,
+.moim-container .moim-box {
+  height: 200px;
+  border: 3px solid #AC1724;
+  border-radius: 20px;
+  background-color: white;
+  margin: 20px 0;
+  padding: 10px;
+  display: flex;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.moim-box {
+  width: 85%;
+}
+
+.moim-container li .moim-specific,
+.moim-container .moim-box div {
+  width: 75%;
+}
+
+.moim-container li div div:nth-child(2),
+.moim-container .moim-box div:nth-child(2) {
+  margin: 10px;
+  font-weight: bold;
+}
+
+
+.moim-container li div div:nth-child(3) p,
+.moim-container .moim-box div:nth-child(3) p {
+  margin: 5px;
+  font-weight: bold;
+  display: inline;
+
+}
+
+.moim-container li div div:nth-child(4) p,
+.moim-container .moim-box div:nth-child(4) p {
+  margin: 5px;
+  font-weight: bold;
+  display: inline;
+}
+
+.moim-container li div .attenders,
+.moim-container .moim-box .attenders {
+  margin: 5px;
+  font-weight: 700;
+}
+
+.moim-container li div .profile-name,
+.moim-container .moim-box .profile-name,
+.moim-container .moim-box .profile-name {
+  font-size: 9px;
+  font-weight: bolder;
+}
+
+.write-container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+
+.profile {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.btn-active {
+  display: inline-block;
+  background-color: #AC1724;
+  height: 40px;
+  padding: 0 10px;
+  color: white;
+  font-weight: bolder;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.btn-unactive {
+  display: inline-block;
+  background-color: white;
+  color: black;
+  height: 40px;
+  border: 2px solid black;
+  padding: 0 10px;
+  font-weight: bolder;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.attend-btn {
+  background-color: #AC1724;
+  height: 50px;
+  width: 50px;
+  color: white;
+  font-weight: bolder;
+  border: 0;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.cancel {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.input-dealer {
+  height: 40px;
+  width: 130px;
+}
+
+.important {
+  background-color: yellowgreen;
+}
+
+.color-light {
+  background-color: #AC6666;
+}
+
+.calendar {
+  height: 90px;
+}
+
+
+.profile-container {
+  background-color: white;
+  width: 80%;
+  max-width: 400px;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.profile-container .profile-specific {}
+
+.profile-container p {
+  font-size: 16px;
+}
+
+.profile-container p:first-child {
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.profile-specific p:last-child {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.user-email,
+.user-phone {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.bold {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.rank-select-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.rank-select-list li {
+  margin-top: 8px;
+  ;
+}
+
+.prized-out {
+  background-color: gray;
+  position: absolute;
+  height: 220px;
+  top: 0px;
+  left: 0px;
+  border-radius: 16px;
+  opacity: 0.8;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  width: 100%;
 }

@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { FirebaseProvider } from './context/Firebase';
 import { UserProvider } from './context/User';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import CustomRouterProvider from './component/CustomRouter'
 // import Auth from './page/Auth'
@@ -18,9 +20,9 @@ root.render(
   <React.StrictMode>
     <FirebaseProvider>
       <UserProvider>
-        <CustomRouterProvider>
+        <Router>
           <App />
-        </CustomRouterProvider>
+        </Router>
       </UserProvider>
     </FirebaseProvider>
   </React.StrictMode>

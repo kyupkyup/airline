@@ -1,8 +1,17 @@
 import { useState } from "react"
 
-const useDropdown = (list) => {
-    const [selected, setSelected] = useState()
+const useDropdown = (list, initialValue) => {
+    const [selected, setSelected] = useState(initialValue)
     const [isOpen, setOpen] = useState(false)
+
+    const clickDropDown = () => {
+        if (isOpen) {
+            setOpen(false)
+        }
+        else {
+            setOpen(true)
+        }
+    }
 
     const openDropdown = () => {
         setOpen(true)
@@ -12,9 +21,13 @@ const useDropdown = (list) => {
         setOpen(false)
     }
 
-    const List = ({ children }) => {
-        return <ul>
-            {list.map(item => {
+    const List = ({ FirstItem, children }) => {
+        return <ul className='rank-select-list'>
+            <FirstItem onClick={() => {
+                closeDropdown()
+                setSelected(null)
+            }} />
+            {list.map((item) => {
                 return <li onClick={() => {
                     setSelected(item)
                     closeDropdown()
@@ -25,7 +38,7 @@ const useDropdown = (list) => {
         </ul>
     }
 
-    return { isOpen, openDropdown, selected, closeDropdown, List }
+    return { isOpen, openDropdown, selected, closeDropdown, List, clickDropDown }
 }
 
 export default useDropdown

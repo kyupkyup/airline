@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import { addDoc, collection } from "firebase/firestore";
-import { useFirebaseContext } from "../../context/Firebase";
-import { useUserContext } from "../../context/User";
+import { useFirebaseContext } from "../../../context/Firebase";
+import { useUserContext } from "../../../context/User";
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
-import useOnChange from '../../hooks/useChange'
+import useOnChange from '../../../hooks/useChange'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -22,7 +22,7 @@ const Write = () => {
     const [attendanceLimit, handleLimitChange] = useOnChange();
 
     const write = useCallback(async () => {
-        if (!name || !date || !place || !price || !targetDate || !attendanceLimit) {
+        if (!name || !place || !price || !targetDate || !attendanceLimit) {
             alert('빈칸이 있습니다.')
             return;
         }
@@ -40,11 +40,17 @@ const Write = () => {
                 attendance: [],
                 host: user.uid,
                 isPrizedOut: false,
+                rank: {
+                    first: {},
+                    second: {},
+                    third: {},
+                    fourth: {}
+                }
             };
 
             // 'items' 컬렉션 내의 'new-item-id' 문서에 데이터를 설정하여 새로운 문서 생성
             await addDoc(newMoim, newData);
-            navigate('/moim')
+            navigate('/')
             alert('모임 생성 완료')
         }
         catch (e) {
@@ -53,20 +59,22 @@ const Write = () => {
         }
     }, [user, name, date, targetDate, place, price, attendanceLimit])
 
-    return <div>
+    return <div className="route-container write-container">
         <div>
-            <input type="text" value={name} onChange={handleNameChange} />
-            <input type="text" value={date} onChange={handleDateChange} />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DateTimePicker']}>
-                    <DateTimePicker label="Controlled picker" value={targetDate} onChange={(newValue) => handleTargetDateChange(newValue)} />
-                </DemoContainer>
-            </LocalizationProvider>
-            <input type="text" value={place} onChange={handlePlaceChange} />
-            <input type="number" value={price} onChange={handlePriceChange} />
-            <input type="number" value={attendanceLimit} onChange={handleLimitChange} />
+            <input className='input-write' type="text" value={name} onChange={handleNameChange} placeholder='모임 이름' />
+            <div className='calendar'>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DateTimePicker']}>
+                        <DateTimePicker label="Controlled picker" value={targetDate} onChange={(newValue) => handleTargetDateChange(newValue)} />
+                    </DemoContainer>
+                </LocalizationProvider>
+            </div>
+
+            <input className='input-write' type="text" value={place} onChange={handlePlaceChange} placeholder='모임 장소' />
+            <input className='input-write' type="number" value={price} onChange={handlePriceChange} placeholder='비용' />
+            <input className='input-write' type="number" value={attendanceLimit} onChange={handleLimitChange} placeholder='제한인원' />
         </div>
-        <button onClick={write}>
+        <button className="btn-active" onClick={write}>
             모임 만들기
         </button>
     </div>

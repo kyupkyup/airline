@@ -1,16 +1,19 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { doc, getDoc, updateDoc, increment } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirebaseContext } from "../../context/Firebase";
 import { useUserContext } from "../../context/User";
 import { arrayContainsUser, removeObjectFromArray, arrayContainsUserReturnObj } from '../../utils/string'
 import Rank from '../../component/moim/Rank'
+import dayjs from "dayjs";
+import 'dayjs/locale/ko'
 
 const MoimSpecific = () => {
     const { id: moimId } = useParams()
     const { db } = useFirebaseContext()
+    const navigate = useNavigate();
     const [moim, setMoim] = useState()
-    const { user, usageBuyIn, refreshUser } = useUserContext();
+    const { user, usageBuyIn, setUser } = useUserContext();
     const [isAttend, setAttend] = useState(false);
     const [isHost, setHost] = useState(false)
 
@@ -32,7 +35,13 @@ const MoimSpecific = () => {
                 user: null,
                 targetDate: null,
                 attendance: [],
-                isPrizedOut: false
+                isPrizedOut: false,
+                rank: {
+                    first: null,
+                    second: null,
+                    third: null,
+                    fourth: null
+                }
             })
         }
     }
@@ -55,7 +64,7 @@ const MoimSpecific = () => {
                 return;
             }
 
-            await updateDoc(userDocRef, { buyIn: increment(tickets) })
+            await updateDoc(userDocRef, { buyIn: increment(-tickets), usedBuyIn: increment(tickets) })
             const attendance = arrayContainsUserReturnObj(moim.attendance, user)
             const newAttendance = removeObjectFromArray(moim.attendance, user)
             newAttendance.push({ ...user, buyIn: attendance.buyIn + tickets })
@@ -66,7 +75,7 @@ const MoimSpecific = () => {
             setMoim({
                 ...moim, attendance: newAttendance
             })
-            usageBuyIn(moim.price)
+            usageBuyIn(tickets)
 
             alert('바이인이 완료되었습니다.')
         }
@@ -76,6 +85,14 @@ const MoimSpecific = () => {
     }
 
     const provideTicket = async (attenderId) => {
+        if (moim.isPrizedOut) {
+            alert('이미 프라이즈아웃된 모임입니다.')
+            return;
+        }
+        if (!isHost) {
+            alert('호스트만 티켓을 지급할 수 있습니다.')
+            return;
+        }
         const tickets = prompt('지급할 티켓을 입력해주세요. 티켓을 회수할 경우 음수를 입력해주세요.')
         if (!tickets) return;
         if (typeof Number(tickets) !== 'number' || isNaN(Number(tickets))) {
@@ -93,7 +110,12 @@ const MoimSpecific = () => {
         await updateDoc(userDocRef, {
             buyIn: increment(Number(tickets))
         })
+        setUser({ ...user, buyIn: user.buyIn + Number(tickets) })
         alert(`지급/회수가 완료되었습니다. ${tickets} 장`)
+    }
+
+    const pageToUpdate = (moimId) => {
+        navigate(`/moim/update/${moimId}`)
     }
 
     useEffect(() => {
@@ -107,26 +129,46 @@ const MoimSpecific = () => {
         }
     }, [moim, user])
 
-    return <>
-        {`${moimId}모임 상세내용`}
-        {moim && <>
-            이름 : {moim.name}
-            시간 : {moim.targetDate}
-            장소 : {moim.place}
-            비용 : {moim.price}
-            참석인원 : {moim.attendance.map(attender => attender && <div>
+    return <div className="route-container moim-container">
+
+        {/* <div>{String(dayjs(moim.targetDate).locale('ko').format('YY.MM.DD ddd HH:mm'))}</div>
+        <div>{moim.name}</div>
+        <div><p>장소</p>    {moim.place}</div>
+        <div><p>비용</p>      {moim.price}</div>
+        <div className="attenders">참석자</div>
+        {moim.attendance.map(attender => attender &&
+            <><img src={attender.photoUrl} className="profile" /><p className="profile-name" >{(attender.displayName?.substr(0, 7))}</p></>
+        )} */}
+        {moim && <div className="moim-box">
+            <div>
+                <div>{String(dayjs(moim.targetDate).locale('ko').format('YY.MM.DD ddd HH:mm'))}</div>
+                <div>{moim.name}</div>
+                <div><p>장소</p>    {moim.place}</div>
+                <div><p>비용</p>      {moim.price}</div>
+                <div className="attenders">참석자</div>
+
+                {moim.attendance.map(attender => attender &&
+                    <><img src={attender.photoUrl} className="profile"
+                        onClick={() => provideTicket(attender.uid)}
+                    />
+                        <p className="profile-name" >{(attender.userName?.substr(0, 7))}</p>
+                        <p className="profile-buyin">{attender.buyIn}</p>
+                    </>
+                )}
+                {/* 
+            {moim.attendance.map(attender => attender && <div>
                 <img src={attender.photoUrl} />
                 <p>현재 바이인 수: {attender.buyIn}</p>
                 {isHost && <button onClick={() => provideTicket(attender.uid)}>바이인권 지급</button>}
-            </div>)}
-        </>
-            // buyin 이 PRICE 과 같을 경우 바이인완료 보여주기
+            </div>)} */}
+            </div>
+        </div>
         }
 
-        {isAttend && <button onClick={buyIn}>바이인 하기</button>}
-        {moim && <Rank moimId={moimId} moim={moim} />}
-
-    </>
+        {isAttend && <button disabled={moim.isPrizedOut} onClick={buyIn} className="btn-active">바이인 하기</button>}
+        {moim && <Rank moimId={moimId} moim={moim} isHost={isHost} />}
+        {isHost && <button disabled={moim.isPrizedOut} className="btn-unactive" onClick={() => pageToUpdate(moimId)}>모임 수정하기</button>}
+    </div>
 }
 
 export default MoimSpecific
