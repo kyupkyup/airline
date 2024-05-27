@@ -67,10 +67,13 @@ const MoimItem = ({ idProps, moimDataProps }) => {
                 <div><p>장소</p>    {moim.place}</div>
                 <div><p>비용</p>      {moim.price}</div>
                 <div className="attenders">참석자</div>
-                {moim.attendance.map(attender => attender &&
-                    <><img src={attender.photoUrl} className="profile" /><p className="profile-name" >{(attender.userName?.substr(0, 7))}</p></>
+                <div className="attenders-container">
 
-                )}
+                    {moim.attendance.map(attender => attender &&
+                        <div><img src={attender.photoUrl} className="profile" /><p className="profile-name" >{(attender.userName?.substr(0, 7))}</p></div>
+
+                    )}
+                </div>
             </div>
 
             {
