@@ -21,7 +21,7 @@ const MoimSpecific = () => {
         const docRef = doc(db, "moim", moimId);
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
+        if (await docSnap.exists()) {
             setMoim(docSnap.data())
         }
         else {
@@ -67,7 +67,7 @@ const MoimSpecific = () => {
             await updateDoc(userDocRef, { buyIn: increment(-tickets), usedBuyIn: increment(tickets) })
             const attendance = arrayContainsUserReturnObj(moim.attendance, user)
             const newAttendance = removeObjectFromArray(moim.attendance, user)
-            newAttendance.push({ ...user, buyIn: attendance.buyIn + tickets })
+            newAttendance.push({ user, buyIn: attendance.buyIn + tickets })
 
             await updateDoc(moimDocRef, {
                 attendance: newAttendance
@@ -130,37 +130,24 @@ const MoimSpecific = () => {
     }, [moim, user])
 
     return <div className="route-container moim-container">
-
-        {/* <div>{String(dayjs(moim.targetDate).locale('ko').format('YY.MM.DD ddd HH:mm'))}</div>
-        <div>{moim.name}</div>
-        <div><p>장소</p>    {moim.place}</div>
-        <div><p>비용</p>      {moim.price}</div>
-        <div className="attenders">참석자</div>
-        {moim.attendance.map(attender => attender &&
-            <><img src={attender.photoUrl} className="profile" /><p className="profile-name" >{(attender.displayName?.substr(0, 7))}</p></>
-        )} */}
         {moim && <div className="moim-box">
             <div>
                 <div>{String(dayjs(moim.targetDate).locale('ko').format('YY.MM.DD ddd HH:mm'))}</div>
-                <div>{moim.name}</div>
+                <div className="title">{moim.name}</div>
                 <div><p>장소</p>    {moim.place}</div>
                 <div><p>비용</p>      {moim.price}</div>
                 <div className="attenders">참석자</div>
-
-                {moim.attendance.map(attender => attender &&
-                    <><img src={attender.photoUrl} className="profile"
-                        onClick={() => provideTicket(attender.uid)}
+                <div className="attenders-container">
+                {moim.attendance.map(attender =>{
+                    console.log(attender)
+                    return  <div className="attender"><img src={attender.user.photoUrl} referrerPolicy="no-referrer" className="profile"
+                        onClick={() => provideTicket(attender.user.uid)}
                     />
-                        <p className="profile-name" >{(attender.userName?.substr(0, 7))}</p>
+                        <p className="profile-name" >{attender.user.userName}</p>
                         <p className="profile-buyin">{attender.buyIn}</p>
-                    </>
+                    </div>}
                 )}
-                {/* 
-            {moim.attendance.map(attender => attender && <div>
-                <img src={attender.photoUrl} />
-                <p>현재 바이인 수: {attender.buyIn}</p>
-                {isHost && <button onClick={() => provideTicket(attender.uid)}>바이인권 지급</button>}
-            </div>)} */}
+                </div>
             </div>
         </div>
         }

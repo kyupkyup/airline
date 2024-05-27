@@ -33,7 +33,7 @@ const Write = () => {
                 name,
                 date: dayjs().valueOf(),
                 place,
-                price: Number(price),
+                price: price,
                 targetDate: targetDate.valueOf(),
                 user: user,
                 attendanceLimit: Number(attendanceLimit),
@@ -71,7 +71,7 @@ const Write = () => {
             </div>
 
             <input className='input-write' type="text" value={place} onChange={handlePlaceChange} placeholder='모임 장소' />
-            <input className='input-write' type="number" value={price} onChange={handlePriceChange} placeholder='비용' />
+            <input className='input-write' type="text" value={price} onChange={handlePriceChange} placeholder='비용' />
             <input className='input-write' type="number" value={attendanceLimit} onChange={handleLimitChange} placeholder='제한인원' />
         </div>
         <button className="btn-active" onClick={write}>

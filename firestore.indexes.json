@@ -1,4 +1,47 @@
 {
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "moim",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isPrizedOut",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "targetDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "moim",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isPrizedOut",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "targetDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "moim",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "targetDate",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "isPrizedOut",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }
