@@ -13,7 +13,7 @@ const Account = () => {
 
     return user && <div class="route-container side-container">
         <div class="profile-container">
-            <img src={user.photoUrl} class="profile-pic" referrerpolicy="no-referrer" />
+            <img src={user?.photoUrl} class="profile-pic" referrerpolicy="no-referrer" />
             <div class="user-name">{user.userName}</div>
             <div class="user-email">{user.email}</div>
         </div>

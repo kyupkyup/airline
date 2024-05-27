@@ -72,8 +72,8 @@ const MoimItem = ({ idProps, moimDataProps }) => {
                 <div className="attenders-container">
                 {moim.attendance.map(attender => attender &&
                     <div className="attender">
-                        <><img src={attender?.user?.photoUrl} className="profile" referrerPolicy="no-referrer"/><p
-                            className="profile-name">{(attender?.user?.userName)}</p></>
+                        <><img src={attender?.user?.photoUrl} className="profile" referrerPolicy="no-referrer"/><b
+                            className="profile-name">{(attender?.user?.userName)}</b></>
                     </div>
                 )}
                 </div>

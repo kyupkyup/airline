@@ -8,7 +8,7 @@ import { useUserContext } from "../../context/User";
 const Moim = () => {
     const [list, setList] = useState([]);
     const { db } = useFirebaseContext()
-    const { user } = useUserContext();
+    const { user, refreshUser} = useUserContext();
     const navigate = useNavigate()
 
     const navigateWrite = () => {
@@ -29,6 +29,9 @@ const Moim = () => {
 
 
     useEffect(() => {
+        if(!user) {
+            refreshUser()
+        }
         (async () => {
             await getDocsFromDb();
         })()

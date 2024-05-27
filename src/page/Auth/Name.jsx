@@ -9,6 +9,7 @@ const AuthPage = () => {
     const { db, auth } = useFirebaseContext();
     const navigate = useNavigate();
     const [name, handleNameChange] = useOnChange();
+    const {setUser} = useUserContext()
 
 
     const login = () => {
@@ -48,6 +49,23 @@ const AuthPage = () => {
                             attend: 0
                         });
                     }
+                    setUser({
+                        uid: user.uid,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoUrl: user.photoURL,
+                        buyIn: 0,
+                        userName: name,
+                        earnedBuyIn: 0,
+                        usedBuyIn: 0,
+                        rank: {
+                            first: 0,
+                            second: 0,
+                            third: 0,
+                            fourth: 0,
+                        },
+                        attend: 0
+                    })
                     navigate('/')
                 } catch (error) {
                     console.error("Error adding document: ", error);

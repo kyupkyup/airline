@@ -140,11 +140,11 @@ const MoimSpecific = () => {
                 <div className="attenders-container">
                 {moim.attendance.map(attender =>{
                     console.log(attender)
-                    return  <div className="attender"><img src={attender.user.photoUrl} referrerPolicy="no-referrer" className="profile"
+                    return  <div className="attender"><img src={attender?.user?.photoUrl} referrerPolicy="no-referrer" className="profile"
                         onClick={() => provideTicket(attender.user.uid)}
                     />
-                        <p className="profile-name" >{attender.user.userName}</p>
-                        <p className="profile-buyin">{attender.buyIn}</p>
+                        <b className="profile-name" >{attender?.user?.userName}</b>
+                        <b className="profile-buyin">{attender?.buyIn}</b>
                     </div>}
                 )}
                 </div>
