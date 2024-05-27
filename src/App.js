@@ -15,7 +15,6 @@ import { useEffect } from 'react';
 
 function App() {
   const { user } = useUserContext();
-  console.log(user)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -29,7 +28,6 @@ function App() {
 
   const NavButton = ({ to, children }) => {
     const { pathname } = useLocation();
-    console.log(pathname, to)
 
     return (
       <button disabled={pathname === to || (pathname.includes('moim') && to === '/')} className="nav-btn" >
