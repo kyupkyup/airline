@@ -7,6 +7,8 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "cleanUrls": true,
+    "trailingSlash": false,
     "site": "airline-d96b7",
     "public": "build",
     "ignore": [

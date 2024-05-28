@@ -4,7 +4,6 @@ import { useUserContext } from "../context/User";
 const Account = () => {
     const { user, refreshUser } = useUserContext();
 
-    console.log(user)
     useEffect(() => {
         if (!user) {
             refreshUser()

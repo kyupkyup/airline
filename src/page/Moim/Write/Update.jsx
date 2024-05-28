@@ -19,13 +19,10 @@ const MoimUpdate = () => {
     const navigate = useNavigate();
 
     const [name, handleNameChange] = useOnChange(moim?.name);
-    console.log(moim?.targetDate, 'asdfasdfasdfasdf')
     const [targetDate, handleTargetDateChange] = useState(moim?.targetDate);
     const [place, handlePlaceChange] = useOnChange(moim?.place);
     const [price, handlePriceChange] = useOnChange(moim?.price);
     const [attendanceLimit, handleLimitChange] = useOnChange(moim?.attendanceLimit);
-    console.log(name)
-    console.log(moim?.name, 'moim')
 
     const update = useCallback(async () => {
         if (!name || !place || !price || !targetDate || !attendanceLimit) {

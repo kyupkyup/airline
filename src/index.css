@@ -458,10 +458,12 @@ body,
   width: 100%;
 }
 
+
 .attenders-container{
   width: 100%;
   display: flex;
   flex-direction: row;
+  overflow-x:auto;
 }
 .attender{
   display: flex;

@@ -60,7 +60,6 @@ export function arrayContainsUser(array, targetObject) {
 
 export function arrayContainsUserReturnObj(array, targetObject) {
 
-    console.log(array)
     // 배열의 각 요소를 반복하여 targetObject와 동일한지를 비교
     for (let obj of array) {
         // targetObject와 obj가 동일한지를 확인
