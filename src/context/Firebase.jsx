@@ -7,18 +7,6 @@ import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 const FirebaseContext = createContext();
 
 const useFirebase = () => {
-    // PRODUCTION
-    // const firebaseConfig = {
-    //     apiKey: "AIzaSyCZg4BWBIPT8P-YzZOTi3AIWyTRQPFcKdU",
-    //     authDomain: "airline-d96b7.firebaseapp.com",
-    //     projectId: "airline-d96b7",
-    //     storageBucket: "airline-d96b7.appspot.com",
-    //     messagingSenderId: "203061671157",
-    //     appId: "1:203061671157:web:66af922c1ebc375c89c1bc",
-    //     measurementId: "G-JWH8M73B5E"
-    // };
-
-    // test
     const firebaseConfig = {
         apiKey: "AIzaSyCZg4BWBIPT8P-YzZOTi3AIWyTRQPFcKdU",
         authDomain: "airline-d96b7.firebaseapp.com",
@@ -34,7 +22,6 @@ const useFirebase = () => {
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
-    // connectFirestoreEmulator(db, '127.0.0.1', 8080);
     const auth = getAuth(app);
 
     return {

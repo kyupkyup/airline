@@ -139,7 +139,6 @@ const MoimSpecific = () => {
                 <div className="attenders">참석자</div>
                 <div className="attenders-container">
                 {moim.attendance.map(attender =>{
-                    console.log(attender)
                     return  <div className="attender"><img src={attender?.user?.photoUrl} referrerPolicy="no-referrer" className="profile"
                         onClick={() => provideTicket(attender.user.uid)}
                     />

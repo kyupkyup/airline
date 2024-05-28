@@ -7,9 +7,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "cleanUrls": true,
-    "trailingSlash": false,
-    "site": "airline-d96b7",
+    "site": "airlinetest",
     "public": "build",
     "ignore": [
       "firebase.json",
@@ -20,6 +18,25 @@
       {
         "source": "**",
         "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "frame-ancestors 'none'"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key" : "X-Content-Type-Options",
+            "value": "nosniff"
+          }
+        ]
       }
     ]
   }

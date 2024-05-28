@@ -37,7 +37,6 @@ const MoimItem = ({ idProps, moimDataProps }) => {
         if (!confirmed) return;
         const moimRef = doc(db, "moim", id);
         const newAttendance = removeObjectFromArray(moimObj.attendance, user)
-        console.log()
 
         await updateDoc(moimRef, {
             attendance: newAttendance
