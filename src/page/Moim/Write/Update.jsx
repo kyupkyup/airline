@@ -36,7 +36,7 @@ const MoimUpdate = () => {
             const newData = {
                 name,
                 place,
-                price: Number(price),
+                price: price,
                 targetDate: targetDate.valueOf(),
                 attendanceLimit: Number(attendanceLimit),
             };
@@ -84,7 +84,7 @@ const MoimUpdate = () => {
                 </LocalizationProvider>
             </div>
             <input className='input-write' type="text" value={place} onChange={handlePlaceChange} />
-            <input className='input-write' type="number" value={price} onChange={handlePriceChange} />
+            <input className='input-write' type="text" value={price} onChange={handlePriceChange} />
             <input className='input-write' type="number" value={attendanceLimit} onChange={handleLimitChange} />
         </div>
         <button className="btn-active" onClick={update}>

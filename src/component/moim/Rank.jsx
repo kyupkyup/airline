@@ -67,10 +67,10 @@ const Rank = ({ moimId, moim, isHost }) => {
 
             const result = window.confirm(`
             정말 지급 하시겠습니까?
-            1등 : ${firstSelected?.userName || ''} 에게 ${prize.first}
-            2등 : ${secondSelected?.userName || ''} 에게 ${prize.second}
-            3등 : ${thirdSelected?.userName || ''} 에게 ${prize.third}
-            4등 : ${fourthSelected?.userName || ''} 에게 ${prize.fourth}
+            1등 : ${firstSelected?.user?.userName || ''} 에게 ${prize.first}
+            2등 : ${secondSelected?.user?.userName || ''} 에게 ${prize.second}
+            3등 : ${thirdSelected?.user?.userName || ''} 에게 ${prize.third}
+            4등 : ${fourthSelected?.user?.userName || ''} 에게 ${prize.fourth}
         `)
             if (!result) {
                 alert('상금 지급을 취소했습니다.')
@@ -80,10 +80,10 @@ const Rank = ({ moimId, moim, isHost }) => {
             const batch = writeBatch(db)
             const dbRef = collection(db, 'users')
 
-            const firstUserDocRef = doc(dbRef, firstSelected.uid)
+            const firstUserDocRef = doc(dbRef, firstSelected.user.uid)
 
             moim.attendance.forEach((attender) => {
-                const userRef = doc(dbRef, attender.uid)
+                const userRef = doc(dbRef, attender.user.uid)
                 batch.update(userRef, {
                     attend: increment(1)
                 })
@@ -97,32 +97,26 @@ const Rank = ({ moimId, moim, isHost }) => {
                 earnedBuyIn: increment(prize.first)
             }, { merge: true })
             if (secondSelected) {
-                const secondUserDocRef = doc(dbRef, secondSelected.uid)
+                const secondUserDocRef = doc(dbRef, secondSelected.user.uid)
                 batch.update(secondUserDocRef, {
                     buyIn: increment(prize.second),
-                    rank: {
-                        second: increment(1)
-                    },
+                    'rank.second': increment(1),
                     earnedBuyIn: increment(prize.second)
                 }, { merge: true })
             }
             if (thirdSelected) {
-                const thirdUserDocRef = doc(dbRef, thirdSelected.uid)
+                const thirdUserDocRef = doc(dbRef, thirdSelected.user.uid)
                 batch.update(thirdUserDocRef, {
                     buyIn: increment(prize.third),
-                    rank: {
-                        third: increment(1)
-                    },
+                    'rank.third': increment(1),
                     earnedBuyIn: increment(prize.third)
                 }, { merge: true })
             }
             if (fourthSelected) {
-                const fourthUserDocRef = doc(dbRef, fourthSelected.uid)
+                const fourthUserDocRef = doc(dbRef, fourthSelected.user.uid)
                 batch.update(fourthUserDocRef, {
                     buyIn: increment(prize.fourth),
-                    rank: {
-                        fourth: increment(1)
-                    },
+                    'rank.fourth': increment(1),
                     earnedBuyIn: increment(prize.fourth)
                 }, { merge: true })
             }
@@ -157,7 +151,7 @@ const Rank = ({ moimId, moim, isHost }) => {
             refresh()
         }
     })
-    // 티켓 수 계산 (전체 - 인원) 
+    // 티켓 수 계산 (전체 - 인원)
 
     return <>
         <div className="bold">entry : {tickets}</div>
@@ -172,30 +166,30 @@ const Rank = ({ moimId, moim, isHost }) => {
         <div>
             {isHost && <button className="btn-active color-light" onClick={openFirstDropDown}>1등 선택</button>}
             {isFirstOpen && <FirstList FirstItem={({ onClick }) => <div onClick={onClick}>없음</div>}>
-                {(item) => <div>{item.userName}</div>}
+                {(item) => <div>{item?.user?.userName}</div>}
             </FirstList>}
-            1등 : {prize.first} {firstSelected?.userName || '선택 안함'}
+            1등 : {prize.first} {firstSelected?.user?.userName || '선택 안함'}
         </div >
         <div>
             {isHost && <button className="btn-active color-light" onClick={openSecondDropDown}>2등 선택</button>}
             {isSecondOpen && <SecondList FirstItem={({ onClick }) => <div onClick={onClick}>없음</div>}>
-                {(item) => <div>{item.userName}</div>}
+                {(item) => <div>{item?.user?.userName}</div>}
             </SecondList>}
-            2등 : {prize.second} {secondSelected?.userName || '선택 안함'}
+            2등 : {prize.second} {secondSelected?.user?.userName || '선택 안함'}
         </div>
         <div>
             {isHost && <button className="btn-active color-light" onClick={openThirdDropDown}>3등 선택</button>}
             {isThirdOpen && <ThirdList FirstItem={({ onClick }) => <div onClick={onClick}>없음</div>}>
-                {(item) => <div>{item.userName}</div>}
+                {(item) => <div>{item?.user?.userName}</div>}
             </ThirdList>}
-            3등 : {prize.third}  {thirdSelected?.userName || '선택 안함'}
+            3등 : {prize.third}  {thirdSelected?.user?.userName || '선택 안함'}
         </div>
         <div>
             {isHost && < button className="btn-active color-light" onClick={openFourthDropDown}>4등 선택</button>}
             {isFourthOpen && <FourthList FirstItem={({ onClick }) => <div onClick={onClick}>없음</div>}>
-                {(item) => <div>{item.userName}</div>}
+                {(item) => <div>{item?.user?.userName}</div>}
             </FourthList>}
-            4등 : {prize.fourth}  {fourthSelected?.userName || '선택 안함'}
+            4등 : {prize.fourth}  {fourthSelected?.user?.userName || '선택 안함'}
         </div >
 
         {

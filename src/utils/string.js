@@ -22,11 +22,8 @@ export function objectsAreEqual(obj1, obj2) {
 
 export function objectsAreUser(obj1, obj2) {
 
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
-
     // 두 객체의 키의 수가 다르면 false를 반환
-    if (keys1.uid === keys2.uid) {
+    if (obj1?.uid === obj2?.uid) {
         return true;
     }
     // 모든 키와 값이 일치하면 true를 반환
@@ -53,7 +50,7 @@ export function arrayContainsUser(array, targetObject) {
     for (let obj of array) {
 
         // targetObject와 obj가 동일한지를 확인
-        if (objectsAreUser(obj, targetObject)) {
+        if (objectsAreUser(obj?.user, targetObject)) {
             return true; // 동일한 객체가 발견되면 true 반환
         }
     }
@@ -66,7 +63,7 @@ export function arrayContainsUserReturnObj(array, targetObject) {
     // 배열의 각 요소를 반복하여 targetObject와 동일한지를 비교
     for (let obj of array) {
         // targetObject와 obj가 동일한지를 확인
-        if (objectsAreUser(obj, targetObject)) {
+        if (objectsAreUser(obj.user, targetObject)) {
             return obj; // 동일한 객체가 발견되면 true 반환
         }
     }
@@ -77,7 +74,7 @@ export function arrayContainsUserReturnObj(array, targetObject) {
 export function removeObjectFromArray(array, targetObject) {
     // 배열을 반복하면서 targetObject와 동일한 객체를 찾음
     for (let i = 0; i < array.length; i++) {
-        if (objectsAreUser(array[i], targetObject)) {
+        if (objectsAreUser(array[i].user, targetObject)) {
             // 동일한 객체를 발견하면 해당 인덱스의 요소를 삭제
             array.splice(i, 1);
 

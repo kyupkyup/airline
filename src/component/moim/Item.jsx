@@ -1,9 +1,10 @@
 import { useUserContext } from "../../context/User";
 import { useFirebaseContext } from "../../context/Firebase";
 import { arrayContainsUser, removeObjectFromArray } from '../../utils/string'
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
 
@@ -23,10 +24,10 @@ const MoimItem = ({ idProps, moimDataProps }) => {
         }
 
         await updateDoc(moimRef, {
-            attendance: [...moimObj.attendance, { ...user, buyIn: 0 }]
+            attendance: arrayUnion({user, buyIn: 0})
         });
         setMoim({
-            ...moim, attendance: [...moimObj.attendance, user]
+            ...moim, attendance: [...moimObj.attendance, {user, buyIn: 0}]
         })
         setAttend(true)
     }, [db, moim, user])
@@ -36,6 +37,7 @@ const MoimItem = ({ idProps, moimDataProps }) => {
         if (!confirmed) return;
         const moimRef = doc(db, "moim", id);
         const newAttendance = removeObjectFromArray(moimObj.attendance, user)
+        console.log()
 
         await updateDoc(moimRef, {
             attendance: newAttendance
@@ -58,21 +60,22 @@ const MoimItem = ({ idProps, moimDataProps }) => {
 
     return <>
         <li key={idProps} style={{ position: "relative" }}>
-            {moim.isPrizedOut && <div className="prized-out" onClick={isAttend ? navigateSpecific : () => { }}>
+            {moim.isPrizedOut && <div className="prized-out" onClick={navigateSpecific}>
                 프라이즈 아웃 완료
             </div>}
             <div onClick={navigateSpecific} className="moim-specific">
                 <div>{String(dayjs(moim.targetDate).locale('ko').format('YY.MM.DD ddd HH:mm'))}</div>
-                <div>{moim.name}</div>
+                <div className="title">{moim.name}</div>
                 <div><p>장소</p>    {moim.place}</div>
                 <div><p>비용</p>      {moim.price}</div>
                 <div className="attenders">참석자</div>
                 <div className="attenders-container">
-
-                    {moim.attendance.map(attender => attender &&
-                        <div><img src={attender.photoUrl} className="profile" /><p className="profile-name" >{(attender.userName?.substr(0, 7))}</p></div>
-
-                    )}
+                {moim.attendance.map(attender => attender &&
+                    <div className="attender">
+                        <><img src={attender?.user?.photoUrl} className="profile" referrerPolicy="no-referrer"/><b
+                            className="profile-name">{(attender?.user?.userName)}</b></>
+                    </div>
+                )}
                 </div>
             </div>
 
