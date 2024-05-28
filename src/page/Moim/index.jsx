@@ -30,7 +30,7 @@ const Moim = () => {
 
     useEffect(() => {
         if(!user) {
-            refreshUser()
+            navigate('/Auth')
         }
         (async () => {
             await getDocsFromDb();
