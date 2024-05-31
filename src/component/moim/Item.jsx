@@ -16,20 +16,22 @@ const MoimItem = ({ idProps, moimDataProps }) => {
     const { db } = useFirebaseContext()
 
 
-    const attend = useCallback(async (id, moimObj) => {
+    const attend = useCallback(async (id) => {
         const moimRef = doc(db, "moim", id);
-        const moimData = await getDoc(moimRef)
-        if(moimData.exists()){
+        const moimSnapShot = await getDoc(moimRef)
+        const moimData = await moimSnapShot.data()
+        if(moimSnapShot.exists()){
+            console.log(moimData)
             if (moimData.attendanceLimit <= moimData.attendance.length + 1) {
                 alert('정원 초과')
                 return;
             }
 
             await updateDoc(moimRef, {
-                attendance: arrayUnion({userId: user, buyIn: 0})
+                attendance: arrayUnion({ user, buyIn: 0})
             });
             setMoim({
-                ...moim, attendance: [...moimObj.attendance, {user, buyIn: 0}]
+                ...moim, attendance: [...moimData.attendance, {user, buyIn: 0}]
             })
             setAttend(true)
         }
@@ -40,10 +42,12 @@ const MoimItem = ({ idProps, moimDataProps }) => {
         const confirmed = window.confirm('참석 취소를 하실 경우, 바이인을 환불 받을 수 없습니다. 그래도 진행하시겠습니까?')
         if (!confirmed) return;
         const moimRef = doc(db, "moim", id);
-        const moimData = await getDoc(moimRef)
-        if(moimData.exists()){
+        const moimSnapShot = await getDoc(moimRef)
+        const moimData = await moimSnapShot.data()
+        if(moimSnapShot.exists()){
             const newAttendance = removeObjectFromArray(moimData.attendance, user)
 
+            console.log(newAttendance)
             await updateDoc(moimRef, {
                 attendance: newAttendance
             });
