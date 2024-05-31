@@ -1,7 +1,7 @@
 import { useUserContext } from "../../context/User";
 import { useFirebaseContext } from "../../context/Firebase";
 import { arrayContainsUser, removeObjectFromArray } from '../../utils/string'
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import {doc, updateDoc, arrayUnion, getDoc} from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,33 +18,40 @@ const MoimItem = ({ idProps, moimDataProps }) => {
 
     const attend = useCallback(async (id, moimObj) => {
         const moimRef = doc(db, "moim", id);
-        if (moimObj.attendanceLimit <= moimObj.attendance.length) {
-            alert('정원 초과')
-            return;
-        }
+        const moimData = await getDoc(moimRef)
+        if(moimData.exists()){
+            if (moimData.attendanceLimit <= moimData.attendance.length + 1) {
+                alert('정원 초과')
+                return;
+            }
 
-        await updateDoc(moimRef, {
-            attendance: arrayUnion({user, buyIn: 0})
-        });
-        setMoim({
-            ...moim, attendance: [...moimObj.attendance, {user, buyIn: 0}]
-        })
-        setAttend(true)
+            await updateDoc(moimRef, {
+                attendance: arrayUnion({userId: user, buyIn: 0})
+            });
+            setMoim({
+                ...moim, attendance: [...moimObj.attendance, {user, buyIn: 0}]
+            })
+            setAttend(true)
+        }
     }, [db, moim, user])
 
-    const cancelAttend = useCallback(async (id, moimObj) => {
+    const cancelAttend = useCallback(async (id) => {
+
         const confirmed = window.confirm('참석 취소를 하실 경우, 바이인을 환불 받을 수 없습니다. 그래도 진행하시겠습니까?')
         if (!confirmed) return;
         const moimRef = doc(db, "moim", id);
-        const newAttendance = removeObjectFromArray(moimObj.attendance, user)
+        const moimData = await getDoc(moimRef)
+        if(moimData.exists()){
+            const newAttendance = removeObjectFromArray(moimData.attendance, user)
 
-        await updateDoc(moimRef, {
-            attendance: newAttendance
-        });
-        setMoim({
-            ...moim, attendance: newAttendance
-        })
-        setAttend(false)
+            await updateDoc(moimRef, {
+                attendance: newAttendance
+            });
+            setMoim({
+                ...moimData, attendance: newAttendance
+            })
+            setAttend(false)
+        }
     }, [db, moim, user])
 
     const navigateSpecific = () => {
