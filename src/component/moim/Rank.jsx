@@ -9,7 +9,7 @@ import { distribute } from '../../utils/prize'
 import useOnChange from '../../hooks/useChange'
 import useDropdown from "../../hooks/useDropDown"
 
-const Rank = ({ moimId, moim, isHost }) => {
+const Rank = ({ moimId, moim, isHost, getMoimDoc }) => {
     const [tickets, setTickets] = useState(null)
     const { db } = useFirebaseContext()
     const [dealer, handleChange] = useOnChange();
@@ -43,6 +43,7 @@ const Rank = ({ moimId, moim, isHost }) => {
         const moimDocSnap = await getDoc(moimRef)
         const ticketsFromDb = await moimDocSnap.data().attendance.reduce((acc, cv) => acc + cv.buyIn, 0)
         setTickets(ticketsFromDb)
+        getMoimDoc()
         checkPrizedOut();
     }
 

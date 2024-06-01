@@ -152,7 +152,7 @@ const MoimSpecific = () => {
         }
 
         {isAttend && <button disabled={moim.isPrizedOut} onClick={buyIn} className="btn-active">바이인 하기</button>}
-        {moim && <Rank moimId={moimId} moim={moim} isHost={isHost} />}
+        {moim && <Rank moimId={moimId} moim={moim} isHost={isHost} getMoimDoc={getMoimDoc}/>}
         {isHost && <button disabled={moim.isPrizedOut} className="btn-unactive" onClick={() => pageToUpdate(moimId)}>모임 수정하기</button>}
     </div>
 }
